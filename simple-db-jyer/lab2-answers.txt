@@ -1,0 +1,52 @@
+Name: Yuer Jiang
+UW ID: 1771830
+
+Exercise 1.
+
+Predicate: This is a simple class comparing two tuples fields with given operation, and is specifically designed for Filter class.
+
+JoinPredicate: This class also compare two tuples' fields with given operation, and is specifically designed for join class.
+
+Filter: This class implements selection in SQL, and it will filter tuples that do not match Predicate.
+
+Join: This class implements join in SQL. Here I only manipulate nested loops algorithm, 
+
+Exercise 2.
+
+IntegerAggregator: This class provides method to group tuples one by one based on given operation, stores grouped tuple related information in fields, and also has a iterator method to make new tuples iterable.
+
+StringAggregator: This class provides similar functions as the former one. The only difference is that this class handles string aggregation and the IntegerAggregator handles Integer aggregation.
+
+Aggregate: This class works together with the former two classes to realize grouping. It supports iteration over grouped tuples.
+
+Difficulties: In exercise 1, it took me some time to understand what nested loop is since I haven't taken CSE344 before. In details, I don't know how to read in M-1 blocks each time of the outer loop since I have been given an iterator over all the tuples. Maybe I will dig that deeper in the future. In exercise 2, IntegerAggregator is really complicated since I need to make all operations work out well. There are many small bugs to fix. Also, In aggregate class, I struggled in open, close and rewind method since they are confusing to decide what objects are need to be set.
+
+End of lab2-part1.
+
+Exercise 3.
+
+The insert and delete tuple method in HeapPage class is served for HeapFile to easily manipulate insert and delete within one page. Thus we only need to think about how to find the HeapPage we want to change in HeapFile.
+
+In detail:
+
+HeapPage: when inserting tuple, I simply choose to iterator over every tuple, if that tuple is not used, then replace with new tuple. When deleting, directly get related recordId and delete it in HeapPage if there is one.
+
+HeapFile: when inserting, iterate over every HeapPage(get page from BufferPool), if current page has space, do inserting. If no pages are available, create a new one and write it to file. When deleting, just find the related pageId and delete the tuple.
+
+Exercise 4.
+
+This two classes Insert and Delete are based on exercise 3. In exercise 3 we handled how to insert and delete one tuple. In this exercise, we will realize inserting and deleting a series of tuples.
+
+Exercise 5.
+
+In this exercise, we are asked to realize flushing pages that are dirty to disk. Also, we need to support evicting pages if BufferPool is full. Since after inserting or deleting, all pages that have been changed will be marked dirty, we need to write those changes to disk(by checking if the page is dirty or not). When evicting pages, I simply iterator over   each page, if it is not dirty, remove it. Removing pages until there are space in BufferPool to read new page.
+
+Exercise 7.
+
+Query 1: 0.54s
+
+Query 2: time runout. Since I used simple nested loop join, it takes fairly large amount of time to join among several tables.
+
+Query 3: I received a DbException but without a message. I really couldn't figure out where the bug is.
+
+

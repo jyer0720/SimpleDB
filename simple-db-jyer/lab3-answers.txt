@@ -1,0 +1,35 @@
+Name: Yuer Jiang
+UW ID: 1771830
+Note: my laptop was broken last week and I've got permission from instructor that I can turn in lab3 part1 together with The Who lab3(so you won't see my lab3-part1 tag).
+
+Exercise 1
+
+Here I write a class called LockManager in BufferPool to help acquire lock and release lock and also realize some other functions in later exercises.
+
+getPage: In order to involve lock, I add a while loop in getPage to check if this get a lock, i.e, if get a lock, keep going, otherwise, always do while loop to check if lock is acquired.(In later exercise I add a Thread.sleep() in while loop to decrease runtime).
+In LockManager, I record what permission current page is under(so that we can distinguish shared lock and exclusive lock), transactions that is currently holding the page's lock.
+
+releaseLock: by calling LockManager's method, we will delete related locks stored in LockManager, as well as release permission of the transaction on certain page.
+
+holdsLock: a simple method to check status whether a transaction holds a lock on certain page. This will help in later exercise.
+
+Exercise 2
+
+This exercise focus on modifying former classes to make lock feasible. Here I didn't do much modification, the main work I did is to fix bugs.(Sorry I really can not recall what changes in detail I have made in this exercise)
+
+Exercise 3
+
+This exercise requires that bufferPool can't evict dirty pages that are not committed. Since I have achieved this in lab2, this exercise is completed with no efforts.(simply check if a page is dirty or not when evicting. If the page is dirty, don't evict)
+
+Exercise 4
+
+In this exercise we are asked to achieve transaction commit and abortion. To achieve committing, we need to call flushPages method. By calling this method, we write all dirty pages that are related to given transaction to disk, and release all the lock in that transaction. For abortion, we set dirty pages related to given transaction to former data where changes has not been made, and also release all related locks.
+
+Exercise 5
+
+Note: when I run TransactionTest in system test, sometimes I passes the test in 1 second, sometimes it shows timeout, I don't know what causes this and can't improve it better.
+
+To detect deadlock, I use a DFS strategy to check if there exists a cycle among transactions. To be specific, I use a hashMap that points from Transaction to a set of Transactions. In this map, the transaction in key is blocked by its related value set of transactions. Every time a transaction tries to acquire a lock, I run detectDeadlock once to check if there is a cycle among involved transactions. To start with, I build a new Set visited to store transactions that I have visited. By doing DFS, once I reach a transaction that I have visited before, it turns out that there is a cycle among transaction, i.e, a deadlock. Otherwise, do nothing and go to next.
+
+Difficulty: Different from former labs, here I am asked to implement a LockManager class by myself without given method. I totally have no idea what methods I will need when beginning. After several failing tryings I find a path to come out with proper methods.
+Besides, since we have written so many classes, I feel a bit convoluted when going through them

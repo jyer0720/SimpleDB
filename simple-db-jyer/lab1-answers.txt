@@ -1,0 +1,37 @@
+Name: Yuer Jiang
+UW ID: 1771830
+
+Exercise 1.
+
+TupleDesc: this class is mainly used to store abstract information, i.e, each field's type and name. Also, it contains some methods to express such information in specific ways, like toString(), iterator(), etc.
+
+Tuple: this class is also used to store information, unlike TupleDesc, it stores specific information. Together with TupleDesc, these two class contain all information about tuples.
+
+These two class are easy and do not involve special design strategies.
+
+Exercise 2.
+
+Catalog: I drew a graph for this class to make it clear on relations of all these elements: tableid, Dbfile(contains TupleDesc), primary key and table name. Then I knew that I need to build two maps to realize all the methods, i.e, from table ID to Dbfile(includes TupleDesc), pkey and table name and from table name to table id. Also, for convenience, I build a Content class to store the three objects in one.
+In general, this class is used to search. By searching in the catalog, we can use something we have to get something we want, like using tableId to get the corresponding Dbfile(table).
+
+Exercise 3.
+
+BufferPool: In general, this class is a platform to store information recently read. By doing this, we can do fast access to these information multiple times without read from disk again. Here we use a ConcurrentHashMap (which is thread-safe) to store the recently read pages. By implementing getPage(), if we already have that page in fields, we directly return it. But if we don't, we first store it in pages field and then return it. For now, I only implement the constructor and getPage method, so I probably do not have full understanding of this class.
+
+Exercise 4.
+
+HeapPageId: This class is also an information storage, which contains unique information for corresponding HeapPage.
+
+RecordId: Again, an information storage, rather than for HeapPage, it is specifically for each tuple in the page. Every tuple has a unique RecordId showing which page it is in and its number in the page.(By knowing which page it belongs to, it also get which table it should belong to).
+
+HeapPage: This class implements Page interface, each represents one page in HeapFile. It is of fixed size which is defined in BufferPool. In general, the methods I implement in this class are mainly used to output the internal information. In particular, it use a header array field of type byte to express whether a tuple is valid or not. To be specific, if the ith element in header is 0, the ith tuple in tuple array is invalid and should not be presented on table. Because of this, the iterator method should consider strategy to skip this invalid tuples.
+
+Exercise 5.
+
+HeapFile: This is the toughest part for me in this lab!! It took me really really long time to make it all right! It involves some data structures I haven't learnt like RandomAccessFile, try catch, etc. so it took some time to renew my knowledge on these stuff. For the first part readPage, by involving RandomAccessFile, things become easier. With given pageId, we locate the start point for the data corresponding to the page, read it in and generate new HeapPage. Learned from piazza, by implementing try catch, I am able to avoid IOException. But I am still not very clear about this part, I need to figure it out more clearly in the future. Another part is iterator. The key point is how to write the readNext() method, while all the other methods are regular to override. One key point I should be careful is that when reading page, I should read from the bufferPool, rather than from the file directly. (This one cause me cache problems in SeqScan test for really really long time)
+
+Exercise 6.
+
+SeqScan: After Exercise 5, this class is not difficult honestly. The special part is to support tableAlias when output TupleDesc. The other methods are regular as usual iterator.
+
+Summary: This lab took fairly larger amount of time than other courses. Probably that is because I am not CS major student. Fortunately, since this is the only course I have this quarter, I believe I can handle it! Also thanks for piazza. It solves many problems I met. If there are any suggestions for improvements, tell me, please. Thank you.

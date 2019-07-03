@@ -1,0 +1,11 @@
+Name: Yuer Jiang
+UW ID: 171830
+Exercise 1.
+
+Here we are required to write a rollback() method. The algorithm is to look backward, if current record is of type update and its transactionId matches with aborted one, undo this. Look back until the first record for this transaction.
+
+Exercise 2.
+
+Here we are required to recover when crashing. First I tried to follow the instruction, i.e, first scan active transactions from checkpoint and redo as well, and then undo all the transactions not committed or aborted. But perhaps because I didn't record down undo records when rollback, there are always errors existing. Thus I joined the two process together to fix bugs. I am not so sure if this will be against right algorithm. But still, I got 1 test error and I really don't know how to improve this. When I tried to fix this, all the passed tests give errors again. So I think this is the best I can do.
+
+Difficulties: Recovery is quite a difficult part in Database internal and I've already felt it when taking lectures. It is a bit convoluted. Besides, I got a fever these days, which made me hard to pay full efforts on my lab4. And I'm so sorry for that.

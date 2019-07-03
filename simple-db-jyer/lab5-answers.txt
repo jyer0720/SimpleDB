@@ -1,0 +1,28 @@
+Name: Yuer Jiang
+UW ID: 1771830
+
+Exercise 1
+
+Step 1: simpledb.Parser.main() and simpledb.Parser.start()
+
+Simpledb.Parser.main() calls sampled.Parser.start() to open the SimpleDB system. Then the latter method() load in tables in the catalog, Then for each table, it calls TableStats.computeStatistics() to compute statistics over each table's data (not implemented yet). After that, it processes the statement from the user by calling processNextStatement(new ByteArrayInputStream(statementBytes)).
+
+Step 2: simpledb.Parser.processNextStatement()
+
+This method first recognize the input statement type and do handleTransactionStatement(), handleInsertStatement(), handleDeleteStatement() and handleQueryStatement() separately. After that, it uses the return query to call query.execute() to run the query.
+
+Step 3: simpledb.Parser.handleQueryStatement()
+
+The key step for step 2 is handleQueryStatement() method. It calls parseQueryLogicalPlan() with given query and transactionId, and then gets physical plan
+
+Step 4: simpledb.Parser.parseQueryLogicalPlan()
+
+This method builds new logical plan and set it with input query. Then add all related tables into the the plan and do processExpression over the plan.
+
+Step 5: simpledb.Parser.processExpression()
+
+Process the expression. If there is a subquery existing, go back to parseQueryLogicalPlan and do the same thing again.
+
+Exercise 6
+
+I failed to implementing this exercise since there is some bug reporting in BufferPool which may be caused by former labs' wrong implementing. I also tried lab2's queries and I again get some bugs reporting. I remembered I had them executed successfully in lab2, so I think things could be wrong after I changed the policy to Steal/No force. But I really don't know how to fix it since there are already so many classes written for now. I'm so sorry I can not get this exercise's answer.
